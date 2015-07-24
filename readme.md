@@ -37,14 +37,18 @@ It uses the same arguments as the built in [thumb()](http://getkirby.com/docs/ch
 
 ### 2. When file could not be compressed
 
-When a file is not compressed, it will try again the next time the page loads. It will fallback to show the visitor the original thumbnail if the compressed one could not be generated. That way it will always return an image to the visitor.
+When a file is not compressed, it will try again the next time the page loads. It will fallback to show the original thumbnail if the compressed one could not be generated. That way it will always show an image to the visitor.
 
 ### 3. When file is already compressed
 
-If a page loads and the thumbnail has been compressed, it will not be compressed again on each page load, only the first time.
+If a page loads and the thumbnail has already been compressed, it will not be compressed again on each page load, only the first time.
 
-It simply check if the compressed file exist or not.
+It simply check if the compressed file already exist or not.
 
 ### 4. thumbs.filename and thumbs folder path
 
-If the `thumbs.filename` is or the thumbs folder path is changed in the config, this plugin will respect your setting.
+If the `thumbs.filename` or the thumbs folder path is changed in the config, this plugin will respect your setting and work with them.
+
+## Version 1
+
+Initial release
