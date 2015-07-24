@@ -52,3 +52,15 @@ If the `thumbs.filename` or the thumbs folder path is changed in the config, thi
 ## Version 1
 
 Initial release
+
+## Future features (maybe)
+
+1. Prefix config to change "-min" that is added to compressed files
+1. Add a similar plugin for images, `tinyImage()`
+
+## Needed
+
+1. Bug reports with detailed information how to reproduce the issue
+1. Code or suggestions on code improvements
+1. Requested features
+1. Feedback
