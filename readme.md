@@ -14,19 +14,37 @@ Download [cacert.pem](http://curl.haxx.se/ca/cacert.pem) and add it to `site/plu
 
 Add `c::set('tinypngKey', 'Your_TinyPNG_API_Key');` to your config file with your tinypng API key.
 
-### 3. Replace thumb function
+### 3. `tinyThumb()` instead of `thumb()`
 
-Replace your thumb function with the `tinyThumb()` function, like this:
+Replace your `thumb()` function with the `tinyThumb()` function, like this:
 
 ```php
 echo tinyThumb( $page->image( '1.png' ), array( 'width' => 300 ) );
 ```
 
-...or get data from it, with the same function call as the original thumb function...
+You can get data from it, with the same functions as the `thumb()` like this:
 
 ```php
 $thumb = tinyThumb( $page->image( '1.png' ), array( 'width' => 300 ) );
 echo $thumb->width();
+```
+
+### 4. Get data from the original `thumb()`
+
+You can get data from the original `thumb()` like this:
+
+```php
+$thumb = tinyThumb( $page->image( '1.png' ), array( 'width' => 300 ) )->thumb();
+echo $thumb->filename();
+```
+
+### 5. Get data from the original `image()`
+
+You can get data from the original `image()` like this:
+
+```php
+$thumb = tinyThumb( $page->image( '1.png' ), array( 'width' => 300 ) )->image();
+echo $image->filename();
 ```
 
 ## Notices
