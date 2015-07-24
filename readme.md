@@ -47,7 +47,7 @@ $thumb = tinyThumb( $page->image( '1.png' ), array( 'width' => 300 ) )->image();
 echo $image->filename();
 ```
 
-## Notices
+## Other information
 
 ### 1. Arguments
 
