@@ -1,11 +1,4 @@
 <?php
-/*
-Put this file in Kirby plugins/nail/nail.php
-Find cacert.pem on the web and put it in the same folder
-Add c::set('tinypngKey', 'your_API_key'); to your config with your TinyPNG API key
-Add echo nail( $page->image( 'screenshot-1.png' ), array( 'width' => 300 ) ); to your header.php to see if it works
-*/
-
 function tinyThumb( $image, $args ) {
 	$class = new TinyThumb( $image, $args );
 	return $class;
@@ -13,44 +6,29 @@ function tinyThumb( $image, $args ) {
 
 class TinyThumb {
 	public $image				= null;
-	public $args				= null;
 	public $thumb				= null;
-	public $from_path			= null;
 	public $to_path				= null;
 	public $to_name				= null;
+	public $to_url				= null;
 
 	public function __construct( $image, $args = array() ) {
-		// Image and arguments
-		$this->image			= $image;
-		$this->args				= $args;
-
-		// Add thumbnail and store thumb object
-		$this->thumb 			= $this->addThumb();
-
-		// Paths
-		$this->from_path 		= kirby()->roots()->thumbs() . '/' . $this->fromFilename();
-		$this->to_path 			= kirby()->roots()->thumbs() . '/' . $this->toFilename();
-
-		$to_name = $this->removeExtension();
-
-		echo $to_name;
+		$this->image 			= $image;
+		$this->thumb 			= thumb( $image, $args );
+		$this->to_path 			= $this->thumb()->dir() . '/' . $this->toFilename();
+		$this->to_name 			= $this->removeExtension();
+		$this->to_url			= $this->toUrl();
 
 		if( ! file_exists( $this->to_path ) ) {
 			$this->compressImage();
 		}
 	}
 
-	private function fromFilename() {
-		return (string)$this->thumb->filename();
-	}
-
-	private function addThumb() {
-		$thumb = thumb( $this->image, $this->args );
-		return $thumb;
-	}
-
 	private function toFilename() {
-		return $this->str_lreplace( '.', '-min.', $this->fromFilename() );
+		return $this->str_lreplace( '.', '-min.', $this->thumb->filename() );
+	}
+
+	private function toUrl() {
+		return $this->str_lreplace( '.', '-min.', $this->thumb->url() );
 	}
 
 	private function str_lreplace( $search, $replace, $subject ) {
@@ -66,7 +44,7 @@ class TinyThumb {
 		curl_setopt_array($request, array(
 			CURLOPT_URL => "https://api.tinify.com/shrink",
 			CURLOPT_USERPWD => "api:" . c::get('tinypngKey'),
-			CURLOPT_POSTFIELDS => file_get_contents( $this->from_path ),
+			CURLOPT_POSTFIELDS => file_get_contents( $this->thumb->url() ),
 			CURLOPT_BINARYTRANSFER => true,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_HEADER => true,
@@ -155,18 +133,22 @@ class TinyThumb {
 		return $this->thumb->width();
 	}
 
-	public function original() {
+	public function thumb() {
 		return $this->thumb;
+	}
+
+	public function image() {
+		return $this->image;
 	}
 
 	public function __toString() {
 		if( file_exists( $this->to_path ) ) {
 			$filename = $this->toFilename();
 		} else {
-			$filename = $this->fromFilename();
+			$filename = $this->thumb->filename();
 		}
 
-		return html::img( kirby()->urls()->thumbs() . '/' . $filename, array(
+		return html::img( $this->to_url, array(
 			'alt' => $this->thumb->name()
 		));
 	}
