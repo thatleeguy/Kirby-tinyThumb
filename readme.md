@@ -29,7 +29,7 @@ $thumb = tinyThumb( $page->image( '1.png' ), array( 'width' => 300 ) );
 echo $thumb->width();
 ```
 
-### 4. Get data from the original `thumb()`
+#### Get data from the original `thumb()`
 
 You can get data from the original `thumb()` like this:
 
@@ -38,7 +38,7 @@ $thumb = tinyThumb( $page->image( '1.png' ), array( 'width' => 300 ) )->thumb();
 echo $thumb->filename();
 ```
 
-### 5. Get data from the original `image()`
+#### Get data from the original `image()`
 
 You can get data from the original `image()` like this:
 
